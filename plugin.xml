@@ -14,6 +14,7 @@
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml" />
         <source-file src="src/android/AES256.java" target-dir="src/com/ideas2it/aes256/AES256" />
+        <source-file src="src/android/Security.java" target-dir="src/com/ideas2it/aes256/AES256" />
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
     </platform>
     <platform name="ios">
@@ -23,10 +24,14 @@
             </feature>
         </config-file>
         <header-file src="src/ios/AES256-Plugin-Bridging-Header.h" />
+        <header-file src="src/ios/AESDecryptor.h" />
         <framework src="Security.framework" />
         <source-file src="src/ios/AES256.swift" />
         <source-file src="src/ios/AES256CBC.swift" />
         <source-file src="src/ios/PBKDF2.swift" />
+        <source-file src="src/ios/AESDecryptor.m" />
+        <source-file src="src/ios/AESSecurity.swift" />
+        <source-file src="src/ios/CryptoAES.swift" />
         <dependency id="cordova-plugin-add-swift-support" version="^2.0.2"/>
     </platform>
 </plugin>

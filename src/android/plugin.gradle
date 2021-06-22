@@ -4,4 +4,5 @@ repositories {
 
 dependencies {
     implementation 'com.github.ExCiteS:apache-commons-codec-shaded:1.11'
+    implementation 'com.google.crypto.tink:tink-android:1.1.0'
 }
