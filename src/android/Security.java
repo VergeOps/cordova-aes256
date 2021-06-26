@@ -49,14 +49,19 @@ public class Security {
 
 
     public byte[] generateCipher(byte[] devicePublicKey, byte[] deviceRandom, CallbackContext callbackContext) throws RuntimeException {
-        try {
+        
+    	String inputInfo = " -- DPK: " + devicePublicKey.length + " DR: " + deviceRandom.length + " PK: " + this.privateKey.length;
+    	
+    	try {
            byte[] sharedKey = X25519.computeSharedSecret(this.privateKey, devicePublicKey);
 
             if (this.proofOfPossession.length > 0) {
                 MessageDigest md = MessageDigest.getInstance("SHA256");
                 md.update(this.proofOfPossession);
                 byte[] digest = md.digest();
+                inputInfo += " DG: " + digest.length;
                 sharedKey = xor(sharedKey, digest);
+                inputInfo += " SK: " + sharedKey.length;
             }
 
             IvParameterSpec ivParameterSpec = new IvParameterSpec(deviceRandom);
@@ -69,18 +74,18 @@ public class Security {
             
         } catch (InvalidKeyException e) {
             e.printStackTrace();
-            callbackContext.error(e.getMessage());
+            callbackContext.error(e.getMessage() + inputInfo);
         } catch (NoSuchAlgorithmException e) {
         	 e.printStackTrace();
-        	 callbackContext.error(e.getMessage());
+        	 callbackContext.error(e.getMessage() + inputInfo);
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-            callbackContext.error(e.getMessage());
+            callbackContext.error(e.getMessage() + inputInfo);
         } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
-            callbackContext.error(e.getMessage());
+            callbackContext.error(e.getMessage() + inputInfo);
         } catch (Exception e) {
-        	callbackContext.error(e.getMessage());
+        	callbackContext.error(e.getMessage() + inputInfo);
         }
         
         return this.clientVerify;
