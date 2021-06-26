@@ -78,9 +78,10 @@ public class Security {
         return this.clientVerify;
     }
 
-    private void generateKeyPair() throws InvalidKeyException {
+    public byte[] generateKeyPair() throws InvalidKeyException {
         this.privateKey = X25519.generatePrivateKey();
         this.publicKey = X25519.publicFromPrivate(this.privateKey);
+        return this.publicKey;
     }
 
     public byte[] encrypt(byte[] data) {

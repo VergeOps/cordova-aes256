@@ -47,7 +47,8 @@ import CommonCrypto;
               messageAs: "Error occurred while generating key pair"
             )
             security = AESSecurity()
-            pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: "Success")
+            let publicKey = security.generateKeyPair()
+            pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: publicKey)
             self.commandDelegate!.send(
               pluginResult,
               callbackId: command.callbackId

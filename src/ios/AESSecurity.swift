@@ -55,13 +55,14 @@ class AESSecurity {
         }
     }
 
-    private func generateKeyPair() {
+    private func generateKeyPair() -> Data {
         self.privateKey = generatePrivateKey()
         guard let privateKey = self.privateKey else {
             publicKey = nil
             return
         }
-        publicKey = try? Curve25519.publicKey(for: privateKey, basepoint: ESPSecurity1.basePoint)
+        publicKey = try? Curve25519.publicKey(for: privateKey, basepoint: AESSecurity.basePoint)
+        return publicKey
     }
     
     private func xor(first: Data, second: Data) -> Data {
