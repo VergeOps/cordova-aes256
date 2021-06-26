@@ -13,6 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.cordova.CallbackContext;
 
 /**
  *
@@ -47,7 +48,7 @@ public class Security {
     }
 
 
-    public byte[] generateCipher(byte[] devicePublicKey, byte[] deviceRandom) throws RuntimeException {
+    public byte[] generateCipher(byte[] devicePublicKey, byte[] deviceRandom, CallbackContext callbackContext) throws RuntimeException {
         try {
            byte[] sharedKey = X25519.computeSharedSecret(this.privateKey, devicePublicKey);
 
@@ -65,14 +66,21 @@ public class Security {
             this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
 
             this.clientVerify = this.encrypt(devicePublicKey);
+            
         } catch (InvalidKeyException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
         	 e.printStackTrace();
+        	 callbackContext.error(e.getMessage());
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
         } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
+            callbackContext.error(e.getMessage());
+        } catch (Exception e) {
+        	callbackContext.error(e.getMessage());
         }
         
         return this.clientVerify;
