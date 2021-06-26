@@ -66,9 +66,9 @@ public class Security {
 
             this.clientVerify = this.encrypt(devicePublicKey);
         } catch (InvalidKeyException e) {
-            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, e.getMessage());
+        	 e.printStackTrace();
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         } catch (InvalidAlgorithmParameterException e) {

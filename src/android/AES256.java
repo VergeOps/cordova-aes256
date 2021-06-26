@@ -4,8 +4,8 @@ import android.util.Base64;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.apache.cordova.CordovaArgs;
 
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -34,7 +34,7 @@ public class AES256 extends CordovaPlugin {
     private Security security;
     
     @Override
-    public boolean execute(final String action, final JSONArray args,  final CallbackContext callbackContext) throws JSONException {
+    public boolean execute(final String action, final CordovaArgs args,  final CallbackContext callbackContext) throws JSONException {
         try {
             cordova.getThreadPool().execute(new Runnable() {
                 @Override
