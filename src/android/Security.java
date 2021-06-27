@@ -24,7 +24,10 @@ public class Security {
     private byte[] publicKey = null;
     private byte[] proofOfPossession = null;
     private byte[] clientVerify = null;
-
+    
+    private IvParameterSpec ivParameterSpec;
+    private SecretKeySpec secretKeySpec;
+    
     private Cipher cipher;
 
     /***
@@ -64,11 +67,8 @@ public class Security {
                 inputInfo += " SK: " + sharedKey.length;
             }
 
-            IvParameterSpec ivParameterSpec = new IvParameterSpec(deviceRandom);
-            SecretKeySpec secretKeySpec = new SecretKeySpec(sharedKey, 0, sharedKey.length, "AES");
-
-            this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
-            this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+            ivParameterSpec = new IvParameterSpec(deviceRandom);
+            secretKeySpec = new SecretKeySpec(sharedKey, 0, sharedKey.length, "AES");
 
             this.clientVerify = this.encrypt(devicePublicKey);
             
@@ -98,10 +98,14 @@ public class Security {
     }
 
     public byte[] encrypt(byte[] data) {
-        return this.cipher.update(data);
+    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
+        this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+        return this.cipher.doFinal(data);
     }
 
     public byte[] decrypt(byte[] data) {
-        return this.cipher.update(data);
+    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
+        this.cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+        return this.cipher.doFinal(data);
     }
 }
