@@ -70,7 +70,7 @@ public class Security {
             ivParameterSpec = new IvParameterSpec(deviceRandom);
             secretKeySpec = new SecretKeySpec(sharedKey, 0, sharedKey.length, "AES");
 
-            this.clientVerify = this.encrypt(devicePublicKey);
+            this.clientVerify = this.encrypt(devicePublicKey, callbackContext);
             
         } catch (InvalidKeyException e) {
             e.printStackTrace();
