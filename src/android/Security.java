@@ -97,15 +97,51 @@ public class Security {
         return this.publicKey;
     }
 
-    public byte[] encrypt(byte[] data) {
-    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
-        this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-        return this.cipher.doFinal(data);
+    public byte[] encrypt(byte[] data, CallbackContext callbackContext) {
+    	try {
+	    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
+	        this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+	        return this.cipher.doFinal(data);
+    	} catch (InvalidKeyException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (NoSuchAlgorithmException e) {
+        	 e.printStackTrace();
+        	 callbackContext.error(e.getMessage() + inputInfo);
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (Exception e) {
+        	callbackContext.error(e.getMessage() + inputInfo);
+        }
+    	
+    	return null;
     }
 
-    public byte[] decrypt(byte[] data) {
-    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
-        this.cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-        return this.cipher.doFinal(data);
+    public byte[] decrypt(byte[] data, CallbackContext callbackContext) {
+    	try {
+	    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
+	        this.cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+	        return this.cipher.doFinal(data);
+    	} catch (InvalidKeyException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (NoSuchAlgorithmException e) {
+        	 e.printStackTrace();
+        	 callbackContext.error(e.getMessage() + inputInfo);
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (Exception e) {
+        	callbackContext.error(e.getMessage() + inputInfo);
+        }
+    	
+    	return null;
     }
 }
