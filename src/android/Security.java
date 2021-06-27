@@ -78,12 +78,6 @@ public class Security {
         } catch (NoSuchAlgorithmException e) {
         	 e.printStackTrace();
         	 callbackContext.error(e.getMessage() + inputInfo);
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
         } catch (Exception e) {
         	callbackContext.error(e.getMessage() + inputInfo);
         }
