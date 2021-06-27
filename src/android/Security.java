@@ -24,10 +24,7 @@ public class Security {
     private byte[] publicKey = null;
     private byte[] proofOfPossession = null;
     private byte[] clientVerify = null;
-    
-    private IvParameterSpec ivParameterSpec;
-    private SecretKeySpec secretKeySpec;
-    
+
     private Cipher cipher;
 
     /***
@@ -67,8 +64,11 @@ public class Security {
                 inputInfo += " SK: " + sharedKey.length;
             }
 
-            ivParameterSpec = new IvParameterSpec(deviceRandom);
-            secretKeySpec = new SecretKeySpec(sharedKey, 0, sharedKey.length, "AES");
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(deviceRandom);
+            SecretKeySpec secretKeySpec = new SecretKeySpec(sharedKey, 0, sharedKey.length, "AES");
+
+            this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
+            this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
 
             this.clientVerify = this.encrypt(devicePublicKey, callbackContext);
             
@@ -78,6 +78,12 @@ public class Security {
         } catch (NoSuchAlgorithmException e) {
         	 e.printStackTrace();
         	 callbackContext.error(e.getMessage() + inputInfo);
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+            callbackContext.error(e.getMessage() + inputInfo);
         } catch (Exception e) {
         	callbackContext.error(e.getMessage() + inputInfo);
         }
@@ -96,26 +102,10 @@ public class Security {
     	String inputInfo = " -- Data: " + data.length;
     	
     	try {
-	    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
-	        this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-	        return this.cipher.doFinal(data);
-    	} catch (InvalidKeyException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (NoSuchAlgorithmException e) {
-        	 e.printStackTrace();
-        	 callbackContext.error(e.getMessage() + inputInfo);
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (Exception e) {
+    		return this.cipher.update(data);
+    	} catch (Exception e) {
         	callbackContext.error(e.getMessage() + inputInfo);
         }
-    	
-    	return null;
     }
 
     public byte[] decrypt(byte[] data, CallbackContext callbackContext) {
@@ -123,25 +113,9 @@ public class Security {
     	String inputInfo = " -- Data: " + data.length;
     	
     	try {
-	    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
-	        this.cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-	        return this.cipher.doFinal(data);
-    	} catch (InvalidKeyException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (NoSuchAlgorithmException e) {
-        	 e.printStackTrace();
-        	 callbackContext.error(e.getMessage() + inputInfo);
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            callbackContext.error(e.getMessage() + inputInfo);
-        } catch (Exception e) {
+    		return this.cipher.update(data);
+    	} catch (Exception e) {
         	callbackContext.error(e.getMessage() + inputInfo);
         }
-    	
-    	return null;
     }
 }
