@@ -98,6 +98,9 @@ public class Security {
     }
 
     public byte[] encrypt(byte[] data, CallbackContext callbackContext) {
+    	
+    	String inputInfo = " -- Data: " + data.length;
+    	
     	try {
 	    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
 	        this.cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
@@ -122,6 +125,9 @@ public class Security {
     }
 
     public byte[] decrypt(byte[] data, CallbackContext callbackContext) {
+    	
+    	String inputInfo = " -- Data: " + data.length;
+    	
     	try {
 	    	this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
 	        this.cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);

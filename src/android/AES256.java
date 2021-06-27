@@ -46,10 +46,10 @@ public class AES256 extends CordovaPlugin {
                             callbackContext.success(security.generateCipher(devicePublicKey, deviceRandom, callbackContext));
                         } else if (ENCRYPT.equalsIgnoreCase(action)) {
                             byte[] value = args.getArrayBuffer(0);
-                            callbackContext.success(security.encrypt(value));
+                            callbackContext.success(security.encrypt(value, callbackContext));
                         } else if (DECRYPT.equalsIgnoreCase(action)) {
                             byte[] value = args.getArrayBuffer(0);
-                            callbackContext.success(security.decrypt(value));
+                            callbackContext.success(security.decrypt(value, callbackContext));
                         } else if (GENERATE_KEY_PAIR.equalsIgnoreCase(action)) {
                         	security = new Security();
                             callbackContext.success(security.generateKeyPair());
