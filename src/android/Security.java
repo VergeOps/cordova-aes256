@@ -106,6 +106,8 @@ public class Security {
     	} catch (Exception e) {
         	callbackContext.error(e.getMessage() + inputInfo);
         }
+    	
+    	return null;
     }
 
     public byte[] decrypt(byte[] data, CallbackContext callbackContext) {
@@ -117,5 +119,7 @@ public class Security {
     	} catch (Exception e) {
         	callbackContext.error(e.getMessage() + inputInfo);
         }
+    	
+    	return null;
     }
 }
